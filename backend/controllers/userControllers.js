@@ -10,22 +10,30 @@ const withdraw = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ number });
 
-  let date = user.date;
+  user.date =  new Intl.DateTimeFormat('en-US').format(new Date);
   if (user && withdraw >= 1000 && withdraw <= 25000) {
-    if (user.count < 3 && user.date != user.last_deposit) {
+    if (user.count < 3 && user.date !== user.last_deposit) {
       user.amount = parseInt(user.amount) - parseInt(withdraw);
       user.count++;
       await user.save();
-    } else if (user.count >= 3) {
-      user.last_deposit = date;
-      res.status(400).send("only three transaction for a day");
+    } 
+     else if ( user.count === "0" && user.date === user.last_deposit){
+      
+      res.status(400).json({message:"only three transaction for a day"})
+      
+    }
+    
+    else if (user.count >= 3) {
+      user.last_deposit = new Intl.DateTimeFormat('en-US').format(new Date);
+      res.status(400).json({message:"only three transaction for a day"})
       user.count = 0;
       await user.save();
     }
-    if (user.amount > 0) {
+   
+    if (user.amount > 0 ) {
       
       await user.save();
-      res.json({
+      res.json({ 
         amount: user.amount,
       });
     } else {

@@ -19,7 +19,7 @@ const userSchema = mongoose.Schema(
     },
 
     date: {
-      type: Date,
+      type: String,
     },
     count: {
       type: String,
@@ -27,7 +27,7 @@ const userSchema = mongoose.Schema(
     },
 
     last_deposit: {
-        type: Date,
+        type: String,
         default: 1
       },
   },
