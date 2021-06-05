@@ -18,18 +18,30 @@ const userSchema = mongoose.Schema(
       default: 0,
     },
 
-    date: {
+    withdraw_date: {
       type: String,
     },
-    count: {
+    withdraw_count: {
       type: String,
       default: 0,
     },
 
-    last_deposit: {
+    last_withdraw: {
         type: String,
         default: 1
       },
+      deposit_date: {
+        type: String,
+      },
+      deposit_count: {
+        type: String,
+        default: 0,
+      },
+  
+      last_deposit: {
+          type: String,
+          default: 1
+        },
   },
 
 

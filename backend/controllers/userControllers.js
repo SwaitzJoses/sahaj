@@ -10,30 +10,27 @@ const withdraw = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ number });
 
-  user.date =  new Intl.DateTimeFormat('en-US').format(new Date);
+  user.withdraw_date = new Intl.DateTimeFormat("en-US").format(new Date());
   if (user && withdraw >= 1000 && withdraw <= 25000) {
-    if (user.count < 3 && user.date !== user.last_deposit) {
+    if (user.withdraw_count < 3 && user.withdraw_date !== user.last_withdraw) {
       user.amount = parseInt(user.amount) - parseInt(withdraw);
-      user.count++;
+      user.withdraw_count++;
       await user.save();
-    } 
-     else if ( user.count === "0" && user.date === user.last_deposit){
-      
-      res.status(400).json({message:"only three transaction for a day"})
-      
-    }
-    
-    else if (user.count >= 3) {
-      user.last_deposit = new Intl.DateTimeFormat('en-US').format(new Date);
-      res.status(400).json({message:"only three transaction for a day"})
-      user.count = 0;
+    } else if (
+      user.withdraw_count === "0" &&
+      user.withdraw_date === user.last_withdraw
+    ) {
+      res.status(400).json({ message: "only three transaction for a day" });
+    } else if (user.withdraw_count >= 3) {
+      user.last_withdraw = new Intl.DateTimeFormat("en-US").format(new Date());
+      res.status(400).json({ message: "only three transaction for a day" });
+      user.withdraw_count = 0;
       await user.save();
     }
-   
-    if (user.amount > 0 ) {
-      
+
+    if (user.amount > 0) {
       await user.save();
-      res.json({ 
+      res.json({
         amount: user.amount,
       });
     } else {
@@ -43,7 +40,7 @@ const withdraw = asyncHandler(async (req, res) => {
   } else {
     res.status(401); // unauthorized
     throw new Error(
-      "Invalid account or Invalid amount to deposit. (min 500 : max 25000)"
+      "Invalid account or Invalid amount to withdraw. (min 1000 : max 25000)"
     );
     // res.json({
 
@@ -61,8 +58,23 @@ const deposit = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ number });
 
+  user.deposit_date = new Intl.DateTimeFormat("en-US").format(new Date());
   if (user && deposit >= 500 && deposit <= 50000) {
-    user.amount = parseInt(user.amount) + parseInt(deposit);
+    if (user.deposit_count < 3 && user.deposit_date !== user.last_deposit) {
+      user.amount = parseInt(user.amount) + parseInt(deposit);
+      user.deposit_count++;
+      await user.save();
+    } else if (
+      user.deposit_count === "0" &&
+      user.deposit_date === user.last_deposit
+    ) {
+      res.status(400).json({ message: "only three transaction for a day" });
+    } else if (user.deposit_count >= 3) {
+      user.last_deposit = new Intl.DateTimeFormat("en-US").format(new Date());
+      res.status(400).json({ message: "only three transaction for a day" });
+      user.deposit_count = 0;
+      await user.save();
+    }
     if (user.amount <= 100000) {
       await user.save();
       res.json({
@@ -75,7 +87,7 @@ const deposit = asyncHandler(async (req, res) => {
   } else {
     res.status(401); // unauthorized
     throw new Error(
-      "Invalid account or Invalid amount to deposit. (min 500 : max 25000)"
+      "Invalid account or Invalid amount to deposit. (min 500 : max 50000)"
     );
     // res.json({
 
@@ -106,9 +118,12 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       number: user.number,
       amount: user.amount,
-      date: user.date,
-      count: user.count,
+      deposit_date: user.deposit_date,
+      withdraw_date: user.withdraw_date,
+      deposit_count: user.deposit_count,
+      withdraw_count: user.withdraw_count,
       last_deposit: user.last_deposit,
+      last_withdraw: user.last_withdraw,
     });
   } else {
     res.status(400);
@@ -116,168 +131,57 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
+// description:  balance
+// route : GET/api/user/balance
+// access: Public
+
+const balance = asyncHandler(async (req, res) => {
+  const { number } = req.body;
+  const user = await User.findOne({ number });
+  if (user) {
+    res.status(200).json({
+      _id: user._id,
+      name: user.name,
+      number: user.number,
+      amount: user.amount,
+      deposit_date: user.deposit_date,
+      withdraw_date: user.withdraw_date,
+      deposit_count: user.deposit_count,
+      withdraw_count: user.withdraw_count,
+      last_deposit: user.last_deposit,
+      last_withdraw: user.last_withdraw,
+    });
+  } else {
+    res.status(400);
+    throw new Error("Invalid user");
+  }
+});
 
 // description:  transfer
 // route : PUT/api/user/transfer
 // access: Public
 const transfer = asyncHandler(async (req, res) => {
-  const { number1,number2, transfer } = req.body;
+  const { number1, number2, transfer } = req.body;
 
+  const sender = await User.findOne({ number: number1 });
 
-  const sender = await User.findOne({number : number1})
-  
-  const receiver = await User.findOne({number : number2});
+  const receiver = await User.findOne({ number: number2 });
 
- sender.amount = parseInt(sender.amount) - parseInt(transfer);
+  sender.amount = parseInt(sender.amount) - parseInt(transfer);
   await sender.save();
   // await user.save();
- receiver.amount = parseInt(receiver.amount) + parseInt(transfer);
-//  await user.save();
- await receiver.save();
- 
-      res.json({
-        // number: sender.number,
-        // number: receiver.number
-        sender:sender.amount,
-        receiver:receiver.amount
-        // amount:sender.amount,
-        // amount:receiver.amount,
-      });
-    
-  }
-);
+  receiver.amount = parseInt(receiver.amount) + parseInt(transfer);
+  //  await user.save();
+  await receiver.save();
 
-
-// description:  Get user profile
-// route : Get/api/user/profile
-// access: Private
-const getUserProfile = asyncHandler(async (req, res) => {
-  //   res.send("SUCCESS");
-
-  console.log(`hi ${req.user._id}`); // because its already signed im (private)
-  const user = await User.findById(req.user._id); // see -------------------------->  we put id here in controller instead of action
-  // console.log(user)
-  if (user) {
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isAdmin: user.isAdmin,
-    });
-  } else {
-    res.status(404);
-    throw new Error("User not found");
-  }
+  res.json({
+    // number: sender.number,
+    // number: receiver.number
+    sender: sender.amount,
+    receiver: receiver.amount,
+    // amount:sender.amount,
+    // amount:receiver.amount,
+  });
 });
 
-// description:  Update user profile
-// route : Put/api/user/profile
-// access: Private
-const updateUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
-
-  if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    if (req.body.password) {
-      user.password = req.body.password;
-    }
-
-    const updatedUser = await user.save();
-
-    res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
-      token: generateToken(updatedUser._id),
-    });
-  } else {
-    res.status(404);
-    throw new Error("User not found");
-  }
-});
-
-// description: Get all users
-// route : Get/api/users
-//Private
-
-const getUsers = asyncHandler(async (req, res) => {
-  const user = await User.find({});
-
-  if (user) {
-    res.json({
-      user,
-    });
-  } else {
-    res.status(404);
-    throw new Error("Users not found");
-  }
-});
-
-// @desc    delete user
-// @route   DELETE /api/users/:id
-// @access  Private/Admin
-const deleteUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id);
-
-  if (user) {
-    await user.remove();
-    res.json({ message: "User removed" });
-  } else {
-    res.status(404);
-    throw new Error("User not found");
-  }
-});
-
-// @desc    Get user by ID
-// @route   GET /api/users/:id
-// @access  Private/Admin
-const getUserById = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id).select("-password");
-
-  if (user) {
-    res.json(user);
-  } else {
-    res.status(404);
-    throw new Error("User not found");
-  }
-});
-
-// @desc    Update user
-// @route   PUT /api/users/:id
-// @access  Private/Admin
-const updateUser = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.params.id);
-
-  if (user) {
-    user.name = req.body.name || user.name;
-    user.email = req.body.email || user.email;
-    user.isAdmin = req.body.isAdmin;
-
-    const updatedUser = await user.save();
-
-    res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      isAdmin: updatedUser.isAdmin,
-    });
-  } else {
-    res.status(404);
-    throw new Error("User not found");
-  }
-});
-
-export {
-  deposit,
-  withdraw,
-  getUserProfile,
-  registerUser,
-  transfer,
-  updateUserProfile,
-  getUsers,
-  deleteUser,
-  getUserById,
-  updateUser,
-};
+export { deposit, withdraw, registerUser, transfer, balance };
