@@ -116,6 +116,38 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
+
+// description:  transfer
+// route : PUT/api/user/transfer
+// access: Public
+const transfer = asyncHandler(async (req, res) => {
+  const { number1,number2, transfer } = req.body;
+
+
+  const sender = await User.findOne({number : number1})
+  
+  const receiver = await User.findOne({number : number2});
+
+ sender.amount = parseInt(sender.amount) - parseInt(transfer);
+  await sender.save();
+  // await user.save();
+ receiver.amount = parseInt(receiver.amount) + parseInt(transfer);
+//  await user.save();
+ await receiver.save();
+ 
+      res.json({
+        // number: sender.number,
+        // number: receiver.number
+        sender:sender.amount,
+        receiver:receiver.amount
+        // amount:sender.amount,
+        // amount:receiver.amount,
+      });
+    
+  }
+);
+
+
 // description:  Get user profile
 // route : Get/api/user/profile
 // access: Private
@@ -242,6 +274,7 @@ export {
   withdraw,
   getUserProfile,
   registerUser,
+  transfer,
   updateUserProfile,
   getUsers,
   deleteUser,
