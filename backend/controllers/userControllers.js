@@ -59,6 +59,7 @@ const deposit = asyncHandler(async (req, res) => {
   const user = await User.findOne({ number });
 
   user.deposit_date = new Intl.DateTimeFormat("en-US").format(new Date());
+  
   if (user && deposit >= 500 && deposit <= 50000) {
     if (user.deposit_count < 3 && user.deposit_date !== user.last_deposit) {
       user.amount = parseInt(user.amount) + parseInt(deposit);
@@ -88,13 +89,13 @@ const deposit = asyncHandler(async (req, res) => {
     res.status(401); // unauthorized
     throw new Error(
       "Invalid account or Invalid amount to deposit. (min 500 : max 50000)"
-    );
+    );}
     // res.json({
 
     //   error,
 
     // });
-  }
+  
 });
 
 // @desc    Register a new user
