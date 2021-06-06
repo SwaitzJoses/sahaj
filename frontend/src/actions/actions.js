@@ -5,7 +5,16 @@ import{
     ACCOUNT_CREATE_FAIL,
     DEPOSIT_REQUEST,
     DEPOSIT_SUCCESS,
-    DEPOSIT_FAIL
+    DEPOSIT_FAIL,
+    WITHDRAW_FAIL,
+    WITHDRAW_SUCCESS,
+    WITHDRAW_REQUEST,
+    BALANCE_REQUEST,
+    BALANCE_SUCCESS,
+    BALANCE_FAIL,
+    TRANSFER_REQUEST,
+    TRANSFER_SUCCESS,
+    TRANSFER_FAIL
 } from '../constants/constants.js'
 
 export const accountCreate = (name) => async (dispatch) => {
@@ -60,3 +69,93 @@ export const depositAmount = (number, deposit) => async (dispatch) => {
           });
         }
 }
+export const withdrawAmount = (number, withdraw) => async (dispatch) => {
+  try {
+      dispatch({
+        type: WITHDRAW_REQUEST,
+      });
+      const { data } = await axios.put(
+          "/api/users/withdraw",
+          { number, withdraw },
+        );
+        dispatch({
+          type: WITHDRAW_SUCCESS,
+          payload: data,
+        });
+      }
+      catch (error) {
+          dispatch({
+            type: WITHDRAW_FAIL,
+            payload:
+                error.response && error.response.data.message
+                  ? error.response.data.message
+                  : error.message,
+              // "Invalid Data",
+              // error.message
+          });
+        }
+}
+
+
+
+export const balanceAmount = (number) => async (dispatch) => {
+  try {
+    console.log(number)
+      dispatch({
+        type: BALANCE_REQUEST,
+      });
+      const { data } = await axios.put(
+          "/api/users/balance",
+          {number},
+        );
+        console.log(data)
+        dispatch({
+          type: BALANCE_SUCCESS,
+          payload: data,
+        });
+      }
+      catch (error) {
+          dispatch({
+            type: BALANCE_FAIL,
+            payload:
+                error.response && error.response.data.message
+                  ? error.response.data.message
+                  : error.message,
+              // "Invalid Data",
+              // error.message
+          });
+        }
+}
+
+
+
+export const transferAmount = ( number1, number2, transfer) => async (dispatch) => {
+  try {
+    
+      dispatch({
+        type: TRANSFER_REQUEST,
+      });
+      const { data } = await axios.put(
+          "/api/users/transfer",
+          {number1, number2, transfer},
+        );
+        // console.log(data)
+        dispatch({
+          type: TRANSFER_SUCCESS,
+          payload: data,
+        });
+      }
+      catch (error) {
+          dispatch({
+            type: TRANSFER_FAIL,
+            payload:
+                error.response && error.response.data.message
+                  ? error.response.data.message
+                  : error.message,
+              // "Invalid Data",
+              // error.message
+          });
+        }
+}
+
+

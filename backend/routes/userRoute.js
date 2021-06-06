@@ -10,7 +10,7 @@ import {
   router.put("/deposit", deposit)
   router.put("/withdraw", withdraw)
   router.put("/transfer", transfer)
-  router.get("/balance", balance)
+  router.put("/balance", balance)
 
   export default router;
   

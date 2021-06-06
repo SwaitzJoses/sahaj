@@ -1,14 +1,14 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { accountReducer, depositReducer } from './reducers/reducers.js'
+import { accountReducer, depositReducer, withdrawReducer, balanceReducer, transferReducer } from './reducers/reducers.js'
 
 const reducer = combineReducers({
     account:accountReducer,
     deposit:depositReducer,
-    // withdraw:withdrawReducer,
-    // balance:balanceReducer,
-    // transfer:transferReducer,
+    withdraw:withdrawReducer,
+    balance:balanceReducer,
+    transfer:transferReducer,
     
 
 })

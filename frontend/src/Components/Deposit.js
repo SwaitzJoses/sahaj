@@ -37,6 +37,7 @@ const Deposit = () => {
 
       const reset =() => {
         dispatch({type : DEPOSIT_RESET })
+        // balance.amount = ""
       }
     
     return (
@@ -60,7 +61,7 @@ const Deposit = () => {
             value={amount}
                 onChange={(e) => setAmount(e.target.value)}/>
 
-                {amount<250 || amount > 50000 ?   <h3>Minimum ₹500 - Maximum ₹50,000</h3> : " "
+                {amount<500 || amount > 50000 ?   <h3>Minimum ₹500 - Maximum ₹50,000</h3> : " "
 
                 }
           

@@ -138,20 +138,26 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const balance = asyncHandler(async (req, res) => {
   const { number } = req.body;
+  
+  console.log(req.body)
   const user = await User.findOne({ number });
+  console.log(user)
   if (user) {
-    res.status(200).json({
-      _id: user._id,
-      name: user.name,
-      number: user.number,
-      amount: user.amount,
-      deposit_date: user.deposit_date,
-      withdraw_date: user.withdraw_date,
-      deposit_count: user.deposit_count,
-      withdraw_count: user.withdraw_count,
-      last_deposit: user.last_deposit,
-      last_withdraw: user.last_withdraw,
-    });
+    res.status(200).json
+    ( user
+      // {
+      // _id: user._id,
+      // name: user.name,
+      // number: user.number,
+      // amount: user.amount,
+      // deposit_date: user.deposit_date,
+      // withdraw_date: user.withdraw_date,
+      // deposit_count: user.deposit_count,
+      // withdraw_count: user.withdraw_count,
+      // last_deposit: user.last_deposit,
+      // last_withdraw: user.last_withdraw,
+    // }
+    );
   } else {
     res.status(400);
     throw new Error("Invalid user");
