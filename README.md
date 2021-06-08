@@ -7,7 +7,7 @@
 **Create account:**
 **Input** 
 Name: "Dave Harrison"
-Output :  Mongodb Auto generated ID (eg.: "_id": "60beeebfacee5928c82713a7",)
+**Output** :  Mongodb Auto generated ID (eg.: "_id": "60beeebfacee5928c82713a7",)
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -15,6 +15,8 @@ Output :  Mongodb Auto generated ID (eg.: "_id": "60beeebfacee5928c82713a7",)
 **Input**
 Account Number: 60beeebfacee5928c82713a7 (Mongodb ID)
 Amount: Minimum ₹500 - Maximum ₹50,000 
+
+**Output** Balance: "Amount value"
 
 **Condition**:
   Minimum ₹500 - Maximum ₹50,000
@@ -41,6 +43,10 @@ And maximun amount = 1,00,000
   
 **Withdraw:**
  Same as deposit except they entered amount - initial amount  
+ **Condition**:
+  Minimum ₹1000 - Maximum ₹1,00,000
+	Only 3 transactions per day.
+	Account balance cannot exceed ₹1,00,000
 And amount should not go down than 0 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -50,11 +56,19 @@ And amount should not go down than 0
 I change value in two documents of same collection, two parameter(Mongodb ID 1, Mongodb ID 2,  amount to be transfered )
 with in regards of the satisfying with the Withdrawal conditions
 
+**Input** : Sender: Account No.1,
+	    Receiver:Account No.2,
+	    Amount: "Some amount" (Rules of withdraw)
+
+**Output** Balance: "Amount value"
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
 **Balance**
 Checking the databse amount value with given single parameter (Mongo db ID (account number))
+
+**Output** Balance: "Amount value"
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -68,15 +82,19 @@ In Transaction the balance of both sender and reciever is seen on the redux dev 
 
 **Document in Mongo db for a specific user in a Collection  :  **
 
-{"_id":{"$oid":"60beeebfacee5928c82713a7"},
-"number":"8146",  ( Used as Account No. in Development stage)
-"amount":"6000",
-"withdraw_count":"0",
-"last_withdraw":"1",
-"deposit_count":"2"
-,"last_deposit":"1",
-"name":"Henry Cavil","
-__v":{"$numberInt":"0"},"deposit_date":"6/8/2021"}
+{
+    "number": "7619",	( Used as Account No. in Development stage)
+    "amount": "49000",
+    "withdraw_count": "0",
+    "last_withdraw": "6/8/2021",
+    "deposit_count": "0",
+    "last_deposit": "6/8/2021",
+    "_id": "60bf790df0bead501ccac34e", ( Account No.)  
+    "name": "Henry Cavil",
+    "__v": 0,
+    "deposit_date": "6/8/2021",
+    "withdraw_date": "6/8/2021"
+}
 
 
 **Cons:**
