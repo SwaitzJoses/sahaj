@@ -43,14 +43,14 @@ export const accountCreate = (name) => async (dispatch) => {
           }
 }
 
-export const depositAmount = (number, deposit) => async (dispatch) => {
+export const depositAmount = ( _id, deposit) => async (dispatch) => {
   try {
       dispatch({
         type: DEPOSIT_REQUEST,
       });
       const { data } = await axios.put(
           "/api/users/deposit",
-          { number, deposit },
+          {  _id, deposit },
         );
         dispatch({
           type: DEPOSIT_SUCCESS,
@@ -69,14 +69,14 @@ export const depositAmount = (number, deposit) => async (dispatch) => {
           });
         }
 }
-export const withdrawAmount = (number, withdraw) => async (dispatch) => {
+export const withdrawAmount = (_id, withdraw) => async (dispatch) => {
   try {
       dispatch({
         type: WITHDRAW_REQUEST,
       });
       const { data } = await axios.put(
           "/api/users/withdraw",
-          { number, withdraw },
+          { _id, withdraw },
         );
         dispatch({
           type: WITHDRAW_SUCCESS,
@@ -98,15 +98,15 @@ export const withdrawAmount = (number, withdraw) => async (dispatch) => {
 
 
 
-export const balanceAmount = (number) => async (dispatch) => {
+export const balanceAmount = (_id) => async (dispatch) => {
   try {
-    console.log(number)
+    console.log(_id)
       dispatch({
         type: BALANCE_REQUEST,
       });
       const { data } = await axios.put(
           "/api/users/balance",
-          {number},
+          {_id},
         );
         console.log(data)
         dispatch({

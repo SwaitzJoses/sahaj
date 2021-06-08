@@ -71,7 +71,7 @@ const AccountCreate = () => {
               style={{ display: "inline", fontSize: "30px" }}
               id="accountNumber"
             >
-              {acc.number}
+              {acc._id}
             </p>
             <p style={{ marginLeft: "100px", fontSize: "10px" }} id="copy"></p>
           </Form>
