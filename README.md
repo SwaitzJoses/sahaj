@@ -1,4 +1,4 @@
-# sahaj BANK APP ( MERN STACK )  
+# Sahaj BANK APP ( MERN STACK )  
 
 **Create account:**
 **Input** 
