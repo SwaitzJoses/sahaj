@@ -1,4 +1,5 @@
 # Sahaj BANK APP ( MERN STACK )  
+**Sahaj BANK APP ( MERN STACK )**
 
 **DEPLOYED URL** : https://sahajbankapp.herokuapp.com/
 **GITHUB** : https://github.com/SwaitzJoses/sahaj.git
