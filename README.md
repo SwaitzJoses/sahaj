@@ -1,5 +1,9 @@
 # Sahaj BANK APP ( MERN STACK )  
 
+**DEPLOYED URL** : https://sahajbankapp.herokuapp.com/
+**GITHUB** : https://github.com/SwaitzJoses/sahaj.git
+
+
 **Create account:**
 **Input** 
 Name: "Dave Harrison"
