@@ -101,6 +101,19 @@ In Transaction the balance of both sender and reciever is seen on the redux dev 
 WE have to copy the Account No. in order to deposit, withdraw and check balance.
 In case of transaction we need two Account No.s copied and available 
 
+**Accounts already in db:**
+60bf790df0bead501ccac34e,
+60bf7aa5f0bead501ccac34f
+
+
+
+
+
+
+
+
+
+
 
 
 
