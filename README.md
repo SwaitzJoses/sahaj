@@ -103,6 +103,7 @@ In Transaction the balance of both sender and reciever is seen on the redux dev 
 **Cons:**
 WE have to copy the Account No. in order to deposit, withdraw and check balance.
 In case of transaction we need two Account No.s copied and available 
+Didn't put some error handling messages  
 
 **Accounts already in db:**
 60bf790df0bead501ccac34e,
