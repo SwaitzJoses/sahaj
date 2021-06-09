@@ -4,6 +4,8 @@
 **DEPLOYED URL** : https://sahajbankapp.herokuapp.com/
 **GITHUB** : https://github.com/SwaitzJoses/sahaj.git
 
+**TO RUN PROGRAM** : NPM RUN DEV  
+
 
 **Create account:**
 **Input** 
